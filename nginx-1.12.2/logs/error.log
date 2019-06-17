@@ -1,0 +1,17 @@
+2019/06/17 13:27:08 [notice] 7892#6984: signal process started
+2019/06/17 13:27:10 [error] 7348#2876: *61 directory index of "C:/work/Project/Script_Server/FrontWeb/ngx-admin/" is forbidden, client: 127.0.0.1, server: scriptserver, request: "GET / HTTP/1.1", host: "localhost:8080"
+2019/06/17 13:27:11 [error] 7348#2876: *61 directory index of "C:/work/Project/Script_Server/FrontWeb/ngx-admin/" is forbidden, client: 127.0.0.1, server: scriptserver, request: "GET / HTTP/1.1", host: "localhost:8080"
+2019/06/17 13:27:11 [error] 7348#2876: *61 directory index of "C:/work/Project/Script_Server/FrontWeb/ngx-admin/" is forbidden, client: 127.0.0.1, server: scriptserver, request: "GET / HTTP/1.1", host: "localhost:8080"
+2019/06/17 13:27:11 [error] 7348#2876: *61 directory index of "C:/work/Project/Script_Server/FrontWeb/ngx-admin/" is forbidden, client: 127.0.0.1, server: scriptserver, request: "GET / HTTP/1.1", host: "localhost:8080"
+2019/06/17 13:27:11 [error] 7348#2876: *61 directory index of "C:/work/Project/Script_Server/FrontWeb/ngx-admin/" is forbidden, client: 127.0.0.1, server: scriptserver, request: "GET / HTTP/1.1", host: "localhost:8080"
+2019/06/17 13:34:42 [warn] 5684#4036: "user" is not supported, ignored in C:\work\Project\Script_Server\nginx-1.12.2/conf/nginx.conf:3
+2019/06/17 13:34:42 [notice] 5684#4036: signal process started
+2019/06/17 13:34:42 [warn] 2328#3148: "user" is not supported, ignored in C:\work\Project\Script_Server\nginx-1.12.2/conf/nginx.conf:3
+2019/06/17 13:34:58 [error] 2328#7372: *64 directory index of "C:/work/Project/Script_Server/FrontWeb/ngx-admin/" is forbidden, client: 127.0.0.1, server: scriptserver, request: "GET / HTTP/1.1", host: "localhost:8080"
+2019/06/17 13:34:59 [error] 2328#7372: *64 directory index of "C:/work/Project/Script_Server/FrontWeb/ngx-admin/" is forbidden, client: 127.0.0.1, server: scriptserver, request: "GET / HTTP/1.1", host: "localhost:8080"
+2019/06/17 13:46:21 [error] 2328#7372: *67 directory index of "C:/work/Project/Script_Server/FrontWeb/ngx-admin/" is forbidden, client: 127.0.0.1, server: scriptserver, request: "GET / HTTP/1.1", host: "localhost:8080"
+2019/06/17 13:51:10 [notice] 2168#5148: signal process started
+2019/06/17 13:52:29 [notice] 312#7772: signal process started
+2019/06/17 13:53:50 [notice] 3908#7616: signal process started
+2019/06/17 13:58:02 [notice] 2196#2156: signal process started
+2019/06/17 15:31:04 [notice] 5724#5720: signal process started
