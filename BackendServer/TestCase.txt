@@ -1,0 +1,10 @@
+http://localhost:3000/v1/ScriptExec/ExecPYCommand/import os;import time;time.sleep(1);import sys;a = int(30)+int(40);print(a);print(a);
+http://localhost:3000/v1/ScriptExec/ExecPYCommand/import os;import time;time.sleep(1);import sys;a = int(30)+int(40);print(a);print(a);print(b)
+http://localhost:3000/v1/ScriptExec/ExecPYFile/Add.py?parameters=20 30
+http://localhost:3000/v1/ScriptExec/ExecPYFile/Add.py?parameters=20 a
+
+
+http://localhost:3000/v1/ScriptExec/PowershellCommand/echo 'powershell is awesome'
+http://localhost:3000/v1/ScriptExec/PowershellCommand/echo 'powershell is awesome
+http://localhost:3000/v1/ScriptExec/PowershellFile/script-loop-Succ.ps1
+http://localhost:3000/v1/ScriptExec/PowershellFile/script-loop-Faile.ps1

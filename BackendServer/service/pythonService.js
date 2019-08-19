@@ -3,7 +3,9 @@ let crypto = require("crypto");
 let os = require("os");
 let path = require("path");
 let fs = require("fs")
-let _execpython = function(pythonpath,callback,paramslist){
+//let execc = require('child_process').exec;
+let storageService = require('../service/storageService')
+let _execpython = function(pythonpath,callback,paramslist,scriptPath){
     return new Promise((resolve,reject)=>{
         try {
             let spwanparmas = [pythonpath]
@@ -14,15 +16,24 @@ let _execpython = function(pythonpath,callback,paramslist){
                     }
                 )
             }
-            let spawnObj = spawn("python",spwanparmas,{encoding:"utf-8"});
-            spawnObj.stdout.on("data",function(chunk){
-                console.log('success : ' + chunk.toString());
-                callback && callback({data:chunk.toString(),pythonpath})
-            })
+            //const scriptPath = storageService.getScriptFolderPath();
+            var spawnObj;
+            if(scriptPath != undefined)
+            {
+                spawnObj = spawn("python.exe",spwanparmas,{cwd:scriptPath,encoding:"utf-8"});
+            }
+            else
+            {
+                spawnObj = spawn("python.exe",spwanparmas,{encoding:"utf-8"});
+            }
             spawnObj.stderr.on("data",function(chunk){
                 console.log('err : ' + chunk.toString());
-                reject({data:`执行${pythonpath} 错误:${chunk}`,pythonpath})
-                // callback && callback({data:chunk.toString(),pythonpath})
+                callback && callback(null,{err:chunk.toString(),pythonpath})
+                //reject({err:`执行${pythonpath} 错误:${chunk}`,pythonpath})
+            })
+            spawnObj.stdout.on("data",function(chunk){
+                console.log('success : ' + chunk.toString());
+                callback && callback({data:chunk.toString(),pythonpath},null)
             })
             spawnObj.on('close', function(code) {
                 console.log('close code : ' + code);
@@ -36,25 +47,20 @@ let _execpython = function(pythonpath,callback,paramslist){
 }
 
 
-function runpath(path,callback){
-    _execpython(path,callback).then(
+function runpath(fileName,callback,scriptPath){
+    _execpython(fileName,callback,scriptPath).then(
         data=>{
-            try{
-                //It's a json
-                const result = JSON.parse(results[0]);
-                callback(result);
-            } catch(error) {
-                //It's not json
-                callback(results);
-            }
+            console.log('执行py文件成功 :', data);
+            callback(data,null);
         },
         err=>{
             console.log('执行py路劲错误 :', err);
-            callback(err)
+            callback(null,err)
         }
     )
+    
 }
-function runpath_with_params(path,params,callback){
+function runpath_with_params(fileName,params,callback,scriptPath){
     //"[object Array]"
     let paramslist = []
     if(Object.prototype.toString.call(params) === "[object String]"){
@@ -64,18 +70,34 @@ function runpath_with_params(path,params,callback){
         paramslist=params
     }
     
-    _execpython(path,callback,paramslist).then(
+    _execpython(fileName,callback,paramslist,scriptPath).then(
         data=>{
             console.log('执行py文件成功 :', data);
-            callback(data);
+            callback(data,null);
         },
         err=>{
             console.log('执行py路劲错误 :', err);
-            callback(err)
+            callback(null,err)
         }
     )
 }
 
+/**
+ * 把文本输入到　路劲
+ * @param {*} pythontext 类python文件
+ * @param {*} tmppath  路径
+ */
+let _writeFileAdd = function(pythontext,tmppath){
+    return new Promise((resolve,reject)=>{
+        fs.writeFile(tmppath,pythontext,{ 'flag': 'a' },function(err){
+            if(err){
+                reject(`writing data err! ${err}`)
+            }else{
+                resolve(tmppath)
+            }
+        })
+    })
+}
 /**
  * 把文本输入到　路劲
  * @param {*} pythontext 类python文件
@@ -92,7 +114,6 @@ let _writeFile = function(pythontext,tmppath){
         })
     })
 }
-
 let _removeFile = function(tmppath){
     return new Promise((resolve,reject)=>{
         fs.unlink(tmppath,function(err){
@@ -152,5 +173,7 @@ let runpytext = (pythontext,callback)=>{
 module.exports = {
     runpath,
     runpytext,
-    runpath_with_params
+    runpath_with_params,
+    _writeFileAdd,
+    _removeFile
 }

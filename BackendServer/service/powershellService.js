@@ -1,12 +1,38 @@
 "use strict";
-
 const isUndefined = require("is-undefined")
     , EventEmitter = require("events").EventEmitter
     , spawn = require("spawno")
     , isWin = require("is-win")
     ;
 
-module.exports = class PowerShell extends EventEmitter {
+module.exports = 
+{
+    ExecPowershellCommand(commands,callback,scriptPath){
+        let ps = new PowerShell(commands,scriptPath);
+      
+        // Handle process errors (e.g. powershell not found)
+        ps.on("error", err => {
+            callback(null,{'err':err})
+        });
+
+        // Stdout
+        ps.on("output", data => {
+            callback({'data':data},null)
+        });
+
+        // Stderr
+        ps.on("error-output", data => {
+            callback(null,{'err':data})
+        });
+
+        // End
+        ps.on("end", code => {
+            console.log(code);
+        });
+    }
+}
+
+class PowerShell extends EventEmitter {
     /**
      * PowerShell
      *
@@ -22,7 +48,7 @@ module.exports = class PowerShell extends EventEmitter {
      * 
      * @param {Function} cb The callback function (optional).
      */
-    constructor (input, opt, cb){
+    constructor (input,scriptPath, opt, cb){
         super();
 
         opt = opt || {};
@@ -42,12 +68,25 @@ module.exports = class PowerShell extends EventEmitter {
 
         args.push("-Command", "& {" + input + "}");
 
-        let _proc = this.proc = spawn(
-            EXE_NAME
-          , args
-          , { stdio: ["ignore", "pipe", "pipe" ] }
-          , cb
-        );
+        let _proc ;
+        if(scriptPath != undefined)
+        {
+            _proc = this.proc = spawn(
+                EXE_NAME
+            , args
+            , { cwd:scriptPath,encoding:"utf-8",stdio: ["ignore", "pipe", "pipe" ] }
+            , cb
+            );
+        }
+        else
+        {
+            _proc = this.proc = spawn(
+                EXE_NAME
+            , args
+            , { stdio: ["ignore", "pipe", "pipe" ] }
+            , cb
+            );
+        }
 
         _proc.stdout.setEncoding("utf8");
         _proc.stderr.setEncoding("utf8");
@@ -66,13 +105,15 @@ module.exports = class PowerShell extends EventEmitter {
                 chunks.push.apply(chunks, chunk);
             }
         });
-
         _proc.stderr.on("data", err => this.emit("error-output", err));
         _proc.on("close", code => {
             if (opt.debug) {
                 console.log(`<${EXE_NAME}> Process ${_proc.pid} exited with code ${code}`);
             }
-            this.emit("output", chunks.join(""))
+            if(chunks.length != 0)
+            {
+                this.emit("output", chunks.join(""))
+            }
             this.emit("end", code);
         });
     }
