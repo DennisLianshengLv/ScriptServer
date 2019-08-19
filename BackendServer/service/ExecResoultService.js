@@ -51,9 +51,9 @@ async function CheckInfoFolderFileNumber(dir)
 
 function WriteResultToFile(data,err,fileInfo)
 {
+    let outputfolder = storageService.getOutputFolderPath();
     if(data != undefined)
     {
-        let outputfolder = storageService.getOutputFolderPath();
         let outputInfoFile = storageService.getOutputInfoPath("Info_"+fileInfo + ".log");
         _writeFileAdd(data['data'],outputInfoFile).then
         (
