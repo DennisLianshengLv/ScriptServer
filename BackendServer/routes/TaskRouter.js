@@ -2,47 +2,91 @@
 
 var express = require('express');
 var router = express.Router();
-//let taskService = require('../services/taskServices.js');
+var taskService = require('../service/taskServices');
+let package=require('../utils/ResPackage');
 
 //create a task
-router.put('/task:id/:filename/:executer/:timesetting', function(req, res, next) {
-  console.log("task id:"+req.params.id);
-  console.log("task filename:"+req.params.filename);
-  console.log("task executer:"+req.params.executer);
-  console.log("task timesetting:"+req.params.timesetting);
+router.put('/task:id/:filename/:executer/:timesetting/:parameters', function(req, res, next) {
+  let response = new package();
 
- // taskService.createTask22(id,filename,executer,timesetting);
-
-  res.send("Create a task");
+  taskService.createTask(req.params.id,req.params.filename,req.params.executer,req.params.timesetting,req.params.parameters,function(error,result){
+    if(error){
+        response.fillResWithError(error);
+        res.send(JSON.stringify(response));
+    }
+    if(result){
+        response.fillResWithData(result);
+        res.send(JSON.stringify(response));
+    }
+  });
 });
 
 //get a task
 router.get('/task:id', function(req, res, next) {
-  console.log("task get:"+req.params.id);
-  res.send("get a task");
+  let response = new package();
+
+  taskService.getTask(id,function(error,result){
+    if(error){
+        response.fillResWithError(error);
+        res.send(JSON.stringify(response));
+    }
+    if(result){
+        response.fillResWithData(result);
+        res.send(JSON.stringify(response));
+    }
+  });
 });
 
 //get all tasks
 router.get('/task/any', function(req, res, next) {
-  console.log("task get:"+req.params.id);
-  res.send("Get all tasks");
+  let response = new package();
+
+  taskService.getAllTask(function(error,result){
+    if(error){
+        response.fillResWithError(error);
+        res.send(JSON.stringify(response));
+    }
+    if(result){
+        response.fillResWithData(result);
+        res.send(JSON.stringify(response));
+    }
+  });
 });
 
 //delete a task
 router.delete('/task:id', function(req, res, next) {
-  console.log("task delete:"+req.params.id);
-  res.send("Delete a task");
+  let response = new package();
+
+  taskService.deleteTask(id,function(error,result){
+    if(error){
+        response.fillResWithError(error);
+        res.send(JSON.stringify(response));
+    }
+    if(result){
+        response.fillResWithData(result);
+        res.send(JSON.stringify(response));
+    }
+  });
 });
 
 //delete all task
 router.delete('/task/any', function(req, res, next) {
-  console.log("task all delete");
-  res.send("Delete all task");
+  let response = new package();
+
+  taskService.deleteAllTasks(function(error,result){
+    if(error){
+        response.fillResWithError(error);
+        res.send(JSON.stringify(response));
+    }
+    if(result){
+        response.fillResWithData(result);
+        res.send(JSON.stringify(response));
+    }
+  });
 });
 
 //update a task
 router.post('/task:id', function(req, res, next) {
-  console.log("task post:"+req.params.id);
   res.send("Update a task");
 });
 
