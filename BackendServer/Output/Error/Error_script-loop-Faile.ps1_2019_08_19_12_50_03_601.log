@@ -1,0 +1,13 @@
+At C:\Users\AVCNDAEWIN10X64\Desktop\WebCommunity\ScriptServer-master\ScriptServer-master\BackendServer\scripts\script-l
+oop-Faile.ps1:2 char:3
++ 9+a
++   ~
+You must provide a value expression following the '+' operator.
+At C:\Users\AVCNDAEWIN10X64\Desktop\WebCommunity\ScriptServer-master\ScriptServer-master\BackendServer\scripts\script-l
+oop-Faile.ps1:2 char:3
++ 9+a
++   ~
+Unexpected token 'a' in expression or statement.
+    + CategoryInfo          : ParserError: (:) [], ParseException
+    + FullyQualifiedErrorId : ExpectedValueExpression
+ 
