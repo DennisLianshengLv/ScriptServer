@@ -13,7 +13,7 @@ module.exports={
             return path.join(path.resolve(__dirname,'..'),'Output\\Info\\',fileName);},
        
       getOutputErrorPath(fileName){
-            return path.join(path.resolve(__dirname,'..'),'Output\\Error\\',fileName);}
+            return path.join(path.resolve(__dirname,'..'),'Output\\Error\\',fileName);}test
 
 }
 
