@@ -3,11 +3,14 @@ let router = express.Router();
 
 let path = require('path');
 let multer  = require('multer');
-let upload = multer({ dest: path.join(__dirname,'temp')});  
-router.use(upload.array("script"));
-
 let fileMangementService=require('../service/fileManageService');
 let package=require('../utils/ResPackage');
+let storageService=require('../service/storageService');
+
+let upload = multer({ dest: storageService.getTempPath()});  
+router.use(upload.array("script"));
+
+
 
 /*Create new file.*/
 router.post('/script/:name/',function(req, res, next) { 
@@ -99,11 +102,27 @@ router.get('/export/script/:name/',function(req, res, next) {
         res.send(JSON.stringify(response));
     }
     if(result){
-        response.fillResWithData(result);
-        
-        res.send(JSON.stringify(response));
+        res.end();
+        //response.fillResWithData(result);
+        //res.send(JSON.stringify(response));
     }
   });
+});
+
+/* ListALL. */
+router.get('/scripts',function(req,res,next){
+  let response = new package();
+  
+    fileMangementService.listScriptFiles(function(error,result){
+      if(error){
+          response.fillResWithError(error);
+          res.send(JSON.stringify(response));
+      }
+      if(result){
+          response.fillResWithData(result);
+          res.send(JSON.stringify(response));
+      }
+    });
 });
 
   module.exports=router;

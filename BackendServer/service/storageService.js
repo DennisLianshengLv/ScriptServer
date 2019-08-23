@@ -5,7 +5,9 @@ module.exports={
             
       getScriptPath(fileName){
             return path.join(path.resolve(__dirname,'..'),'scripts\\',fileName);},
-      
+      getTempPath(){
+        return path.join(path.resolve(__dirname,'..'),'temp\\');},
+	
       getOutputFolderPath(){
             return path.join(path.resolve(__dirname,'..'),'Output\\');},
             
@@ -13,7 +15,7 @@ module.exports={
             return path.join(path.resolve(__dirname,'..'),'Output\\Info\\',fileName);},
        
       getOutputErrorPath(fileName){
-            return path.join(path.resolve(__dirname,'..'),'Output\\Error\\',fileName);}test
+            return path.join(path.resolve(__dirname,'..'),'Output\\Error\\',fileName);}
 
 }
 

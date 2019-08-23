@@ -8,3 +8,19 @@ http://localhost:3000/v1/ScriptExec/PowershellCommand/echo 'powershell is awesom
 http://localhost:3000/v1/ScriptExec/PowershellCommand/echo 'powershell is awesome
 http://localhost:3000/v1/ScriptExec/PowershellFile/script-loop-Succ.ps1
 http://localhost:3000/v1/ScriptExec/PowershellFile/script-loop-Faile.ps1
+
+FileManage Testcase:
+  Add New	:	POST	http://localhost:3000/v1/filemanange/script/test1.ps1/   
+  Update	:	PUT	http://localhost:3000/v1/filemanange/script/test1.ps1/
+  		
+		Set Headers Key: "Content-Type"="application/json"
+		Set Body:
+		{
+		"data" : "script string"
+		}
+		
+  Rename	:	PUT	http://localhost:3000/v1/filemanange/script/test1.ps1/test11.ps1
+  Delete	:	DELETE	http://localhost:3000/v1/filemanange/script/test1.ps1/
+  ListAll	:	GET	http://localhost:3000/v1/filemanange/scripts/
+  Import(UI)	:	GET	http://localhost:3000/
+  Export	:	GET	http://localhost:3000/v1/filemanange/export/script/test1.ps1/

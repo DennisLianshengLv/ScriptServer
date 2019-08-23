@@ -89,9 +89,9 @@ module.exports = {
         }
     },
 
-    async exportScriptFile(res,fileName,callback){
+    exportScriptFile(res,fileName,callback){
         let fileFullName=storageService.getScriptPath(fileName);
-        var archiveFileName = path.join(__dirname,'temp',fileName+'.zip');
+        var archiveFileName = path.join(storageService.getTempPath(),fileName+'.zip');
 
         if(fs.existsSync(fileFullName)){
             var output = fs.createWriteStream(archiveFileName);
@@ -103,12 +103,17 @@ module.exports = {
       output.on('close', function() {
           console.log(archive.pointer() + ' total bytes');
           console.log('archiver has been finalized and the output file descriptor has closed.');
-          //res.download(archiveFileName);
-          return callback(null,archiveFileName);
+          res.download(archiveFileName, function(err){
+            if (err) {
+                return callback(err,null);
+            } else {
+              return callback(null,archiveFileName);
+            }
+          });
       });
       
       archive.on('error', function(err) {
-        return callback(error,null);
+        return callback(err,null);
       });
       // pipe archive data to the file 
       archive.pipe(output);
@@ -124,5 +129,34 @@ module.exports = {
     error={"message":"File not exist."};  
             return callback(error,null);
     }
+    },
+
+    listScriptFiles(callback){
+        const files = [];
+        dir=storageService.getScriptFolderPath();
+        try{
+            fs.readdirSync(dir).forEach(filename => {
+              const name = path.parse(filename).name;
+              const ext = path.parse(filename).ext;
+              const filepath = path.resolve(dir, filename);
+              const stat = fs.statSync(filepath);
+              const isFile = stat.isFile();
+          
+              if (isFile) files.push({ filename, name, ext, stat });
+            });
+          
+            files.sort((a, b) => {
+              // natural sort alphanumeric strings
+              // https://stackoverflow.com/a/38641281
+              return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+            });
+            var names = files.map(function(o,i) {
+                return o.filename;
+              });
+            console.log(names);
+            return callback(null,names);
+        }catch(e){
+            return callback(e,null);
+        }   
     }
 };
