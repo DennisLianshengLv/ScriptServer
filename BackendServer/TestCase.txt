@@ -9,6 +9,11 @@ http://localhost:3000/v1/ScriptExec/PowershellCommand/echo 'powershell is awesom
 http://localhost:3000/v1/ScriptExec/PowershellFile/script-loop-Succ.ps1
 http://localhost:3000/v1/ScriptExec/PowershellFile/script-loop-Faile.ps1
 
+http://localhost:3000/v1/ScriptExec/test/pw/script-loop-Succ.ps1
+http://localhost:3000/v1/ScriptExec/test/py/Add.py?parameters=20 30
+http://localhost:3000/v1/ScriptExec/test/pw/script-loop-Faile.ps1
+http://localhost:3000/v1/ScriptExec/test/py/Add.py?parameters=20 a
+
 FileManage Testcase:
   Add New	:	POST	http://localhost:3000/v1/filemanange/script/test1.ps1/   
   Update	:	PUT	http://localhost:3000/v1/filemanange/script/test1.ps1/
