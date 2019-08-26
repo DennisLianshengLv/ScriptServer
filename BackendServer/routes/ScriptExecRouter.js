@@ -4,6 +4,7 @@ let {WriteResultToFile,GetCurrentLogFileName} = require("../service/ExecResoultS
 let {runpath,runpytext,runpath_with_params} = require("../service/pythonService")
 let storageService = require('../service/storageService')
 let powerShellService = require('../service/powershellService')
+let {runPythonScript,runPowershellScript} = require("../service/ScriptTriggerService")
 
 //import os;import time;time.sleep(1);import sys;a = int(30)+int(40);print(a)
 router.get('/ExecPYCommand/:command', function(req, res, next) {
@@ -55,7 +56,7 @@ router.get('/PowershellFile/:filename', function(req, res, next) {
     },scriptPath)
     res.send("Begin exec powershell script");
   });
-
+  
 //echo 'powershell is awesome'
 router.get('/PowershellCommand/:command', function(req, res, next) {
       // Start the process
@@ -67,6 +68,22 @@ router.get('/PowershellCommand/:command', function(req, res, next) {
       })
       res.send("Begin exec powershell command");
   });
+
+
+//This for test trigger by task
+router.get('/test/:executer/:filename', function(req, res, next) {
+  const scriptPath = storageService.getScriptFolderPath();
+  
+  if(req.params.executer=="py")
+  {
+    runPythonScript(req.params.filename,req.query.parameters);
+  }
+  else if(req.params.executer=="pw")
+  {
+    runPowershellScript(req.params.filename,req.query.parameters);
+  }
+  res.send("Begin exec script");
+});
 
 module.exports = router;
 
