@@ -3,6 +3,7 @@ let runpath = require("./pythonService").runpath;
 let runpath_with_params = require("./pythonService").runpath_with_params;
 let storageService = require('./storageService')
 const powerShellService = require("./powershellService");
+let {WriteResultToFile,GetCurrentLogFileName} = require("../service/ExecResoultService")
 
 //Add.py,20 30 
 function runPythonScript(fileName,params){
@@ -17,7 +18,7 @@ function runPythonScript(fileName,params){
     }
     else
     {
-        runpath_with_params(fileName,function(data,err){
+        runpath_with_params(fileName,params,function(data,err){
           WriteResultToFile(data,err,fileInfo);
         },scriptPath)
     }

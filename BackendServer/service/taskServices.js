@@ -1,6 +1,5 @@
 let schedule = require('node-schedule')
-let {runpath,runpytext,runpath_with_params} = require("../service/pythonService")
-const PowerShell = require("../service/powershellService");
+let {runPythonScript,runPowershellScript} = require("../service/ScriptTriggerService")
 let storageService = require('../service/storageService')
 
 function createTask(id, filename, executer, timesetting, parameters,callback)
@@ -82,17 +81,12 @@ module.exports = {
     deleteAllTasks
 }
 
-//Call the executer services
+//Call the executer services filename without path
 function internalAddTask(executer,filename,parameters){
     if(executer=="py"){
-    runpath_with_params(filePath,params,function(data){
-            console.log(data);
-        });
-    }
+        runPythonScript(filename,parameters);
+        }
     else if(executer=="pw"){
-        const commands = storageService.getScriptPath(filename);
-        const params = parameters;
-        let ps = new PowerShell(commands+" "+params);
-        //console.log("Run powershell script:" +filename+" "+ parameters + new Date());
+        runPowershellScript(filename,parameters);
     }
 }
